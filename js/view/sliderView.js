@@ -9,7 +9,7 @@ class SliderView extends View {
     _generateMarkup(element) {
 
         return `                
-        <div class="movie-details"><div class="card" data-id="${element.id}"><img src="${element.image.medium}" alt=""></div></div>
+        <div class="movie-details"><div class="card" data-id="${element.id}"><img class="main-img" src="${element.image.medium}" alt=""></div></div>
 
         `;
 

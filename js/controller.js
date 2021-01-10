@@ -91,15 +91,13 @@ const cardViewHoverController = function (card, type) {
 
 const addToListController = function (type, id) {
 
-    const data = model.changeMovieStatus(type, id);
+    model.changeMovieStatus(type, id);
 
     gridView.render(model.getSearchResultsPage(model.state.pagination.currGridPage, 'grid'));
 
     paginationView.renderGridView(model.state);
 
-    console.log(data);
-
-    listView.render(data);
+    listView.render(model.state.lists);
 
 
 }
@@ -110,9 +108,9 @@ const init = function () {
     paginationView.addHandlerClick(controlSliderPagination);
     paginationView.addHandlerGridClick(controlGridPagination);
     gridView.addHandlerCardView(cardViewController);
-    // sliderView.addHandlerCardView(cardViewController);
+    sliderView.addHandlerCardView(cardViewController);
     sliderView.addHandlerRemoveCardView(removeCardViewController);
-    gridView.addHandlerAddList(addToListController);
+    listView.addHandlerAddList(addToListController);
 
 }
 

@@ -26,34 +26,16 @@ export default class View {
 
     addHandlerCardView(handler) {
 
-        setTimeout((d) => {
+        this._parentElement.addEventListener('click', function (element) {
+            const btn = element.target;
 
-            document.querySelectorAll(".card").forEach((e) => {
-                // console.log(e);
+            // console.log(element.target.className);
 
-                e.addEventListener('click', (el) => {
+            if (btn.className == "main-img") {
 
-                    // console.log(el.target.parentNode);
-                    if (el.target.parentNode.className == "card")
-                        handler(el.target.parentNode.dataset.id);
-
-
-                })
-            })
-        }, 1000)
-
-
-        // this._parentElement.addEventListener('click', function (element) {
-        //     const btn = element.target.closest('.card');
-
-        //     console.log(element.target);
-
-        //     if (btn != null) {
-
-        //         handler(btn.dataset.id);
-        //     }
-        //     element.stopPropagation();
-        // }, true)
+                handler(btn.parentNode.dataset.id);
+            }
+        })
 
     }
 
@@ -196,31 +178,6 @@ export default class View {
 
         })
 
-    }
-
-    addHandlerAddList(handler) {
-
-
-        this._parentElement.addEventListener("click", function (e) {
-
-            const data = e.target.closest(".sub-img");
-
-            if (data != null) {
-
-                // console.log(e.target.classList[1]);
-                handler(e.target.classList[1], e.target.closest(".card").dataset.id);
-            }
-
-        })
-        // setTimeout((d) => {
-        // document.querySelectorAll('.sub-img').forEach((e) => {
-        //     e.addEventListener('click', (el) => {
-
-        //         console.log("sub-img is clicked: ");
-        //         // el.stopPropagation();
-        //     })
-        // })
-        // }, 2000)
     }
 
 }

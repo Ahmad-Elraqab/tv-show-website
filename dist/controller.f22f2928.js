@@ -982,6 +982,11 @@ var state = {
     pageGrid: 1,
     currGridPage: 1,
     resultsPerPage: _config.RES_PER_PAGE
+  },
+  lists: {
+    finished: [],
+    watchLater: [],
+    favourite: []
   }
 };
 exports.state = state;
@@ -1050,38 +1055,98 @@ var getSearchResultsPage = function getSearchResultsPage() {
 exports.getSearchResultsPage = getSearchResultsPage;
 
 var changeMovieStatus = function changeMovieStatus(type, id) {
-  state.TvShows.find(function (e) {
-    if (e.id == id) {
-      var parentE;
-
-      switch (type) {
-        case "myList":
-          e.parentE = ".finished";
-          e.myList = true;
-          break;
-
-        case "myWatchLater":
-          e.parentE = ".watch-later";
-          e.myWatchLater = true;
-          break;
-
-        case "myFavourite":
-          e.parentE = ".favourite";
-          e.myFavourite = true;
-          break;
-
-        default:
-          break;
-      }
-    }
-  });
-  var data = state.TvShows.find(function (e) {
-    return e.id == id;
-  });
-  return data;
+  _checkData(id, type);
 };
 
 exports.changeMovieStatus = changeMovieStatus;
+
+var _checkData = function _checkData(id, type) {
+  var card = state.TvShows.find(function (e) {
+    return e.id == id;
+  }); // i have tried to simplify this switch to one case but it didn't work with me.
+  // console.log(state.lists.finished.find((el) => el.id == id));
+
+  switch (type) {
+    case "myList":
+      var data = state.lists.finished.find(function (el) {
+        return el.id == id;
+      });
+
+      if (data) {
+        if (data.myList == true) {
+          data.myList = false;
+          state.lists.favourite.splice(state.lists.finished.indexOf(data), 1);
+        }
+      } else {
+        card.parentE = ".finished";
+        card.myList = true;
+        state.lists.finished.push(card);
+      }
+
+      break;
+
+    case "myWatchLater":
+      data = state.lists.watchLater.find(function (el) {
+        return el.id == id;
+      });
+
+      if (data) {
+        if (data.myWatchLater == true) {
+          data.myWatchLater = false;
+          state.lists.favourite.splice(state.lists.watchLater.indexOf(data), 1);
+        }
+      } else {
+        card.parentE = ".watch-later";
+        card.myWatchLater = true;
+        state.lists.watchLater.push(card);
+      }
+
+      break;
+
+    case "myFavourite":
+      data = state.lists.favourite.find(function (el) {
+        return el.id == id;
+      }); // console.log(data);
+
+      if (data) {
+        if (data.myFavourite == true) {
+          data.myFavourite = false;
+          state.lists.favourite.splice(state.lists.favourite.indexOf(data), 1);
+        }
+      } else {
+        card.parentE = ".favourite";
+        card.myFavourite = true;
+        state.lists.favourite.push(card);
+      }
+
+      break;
+
+    default:
+      break;
+  } // console.log(state.lists);
+
+}; // Archive.
+// if (state.lists.finished.find((e) => e.id == id)) {
+//     if (e.myList == true) {
+//         e.myList = false;
+//     } else {
+//         parentE = ".finished";
+//         card.myList = true;
+//         state.lists.finished.push(card);
+//     }
+// }
+// switch (type) {
+//     case "myList":
+//         break;
+//     case "myWatchLater":
+//         _checkData(id, ".watch-later")
+//         break;
+//     case "myFavourite":
+//         _checkData(id, ".favourite")
+//         break;
+//     default:
+//         break;
+// }
 },{"./config.js":"js/config.js","./helpers.js":"js/helpers.js","regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"image/exit.png":[function(require,module,exports) {
 module.exports = "/exit.ec9ccb2d.png";
 },{}],"js/view/view.js":[function(require,module,exports) {
@@ -1131,22 +1196,13 @@ var View = /*#__PURE__*/function () {
   }, {
     key: "addHandlerCardView",
     value: function addHandlerCardView(handler) {
-      setTimeout(function (d) {
-        document.querySelectorAll(".card").forEach(function (e) {
-          // console.log(e);
-          e.addEventListener('click', function (el) {
-            // console.log(el.target.parentNode);
-            if (el.target.parentNode.className == "card") handler(el.target.parentNode.dataset.id);
-          });
-        });
-      }, 1000); // this._parentElement.addEventListener('click', function (element) {
-      //     const btn = element.target.closest('.card');
-      //     console.log(element.target);
-      //     if (btn != null) {
-      //         handler(btn.dataset.id);
-      //     }
-      //     element.stopPropagation();
-      // }, true)
+      this._parentElement.addEventListener('click', function (element) {
+        var btn = element.target; // console.log(element.target.className);
+
+        if (btn.className == "main-img") {
+          handler(btn.parentNode.dataset.id);
+        }
+      });
     }
   }, {
     key: "viewDetailsCard",
@@ -1227,26 +1283,6 @@ var View = /*#__PURE__*/function () {
           console.log("data is null"); // handler(card, 'hide');
         }
       });
-    }
-  }, {
-    key: "addHandlerAddList",
-    value: function addHandlerAddList(handler) {
-      this._parentElement.addEventListener("click", function (e) {
-        var data = e.target.closest(".sub-img");
-
-        if (data != null) {
-          // console.log(e.target.classList[1]);
-          handler(e.target.classList[1], e.target.closest(".card").dataset.id);
-        }
-      }); // setTimeout((d) => {
-      // document.querySelectorAll('.sub-img').forEach((e) => {
-      //     e.addEventListener('click', (el) => {
-      //         console.log("sub-img is clicked: ");
-      //         // el.stopPropagation();
-      //     })
-      // })
-      // }, 2000)
-
     }
   }]);
 
@@ -1340,7 +1376,7 @@ var SliderView = /*#__PURE__*/function (_View) {
   _createClass(SliderView, [{
     key: "_generateMarkup",
     value: function _generateMarkup(element) {
-      return "                \n        <div class=\"movie-details\"><div class=\"card\" data-id=\"".concat(element.id, "\"><img src=\"").concat(element.image.medium, "\" alt=\"\"></div></div>\n\n        ");
+      return "                \n        <div class=\"movie-details\"><div class=\"card\" data-id=\"".concat(element.id, "\"><img class=\"main-img\" src=\"").concat(element.image.medium, "\" alt=\"\"></div></div>\n\n        ");
     }
   }]);
 
@@ -1666,18 +1702,57 @@ var ListView = /*#__PURE__*/function (_View) {
   _createClass(ListView, [{
     key: "render",
     value: function render(data) {
-      this._data = data; // console.log(data);
+      var _this2 = this;
 
-      this._parentElement = document.querySelector(this._data.parentE);
+      console.log(data); // this._clear();
 
-      var markup = this._generateListMarkup();
+      document.querySelector('.favourite').innerHTML = '';
+      document.querySelector('.watch-later').innerHTML = '';
+      document.querySelector('.finished').innerHTML = '';
+      data.favourite.forEach(function (element) {
+        _this2._data = element; // console.log(element);
 
-      this._parentElement.insertAdjacentHTML('beforeend', markup);
+        _this2._parentElement = document.querySelector(_this2._data.parentE);
+
+        var markup = _this2._generateListMarkup();
+
+        _this2._parentElement.insertAdjacentHTML('beforeend', markup);
+      });
+      data.watchLater.forEach(function (element) {
+        _this2._data = element; // console.log(element);
+
+        _this2._parentElement = document.querySelector(_this2._data.parentE);
+
+        var markup = _this2._generateListMarkup();
+
+        _this2._parentElement.insertAdjacentHTML('beforeend', markup);
+      });
+      data.finished.forEach(function (element) {
+        _this2._data = element; // console.log(element);
+
+        _this2._parentElement = document.querySelector(_this2._data.parentE);
+
+        var markup = _this2._generateListMarkup();
+
+        _this2._parentElement.insertAdjacentHTML('beforeend', markup);
+      });
     }
   }, {
     key: "_generateListMarkup",
     value: function _generateListMarkup() {
       return "\n\n        <div class=\"row\">\n        <img src=\"".concat(this._data.image.original, "\" alt=\"\">\n        <div>\n            <h2>").concat(this._data.name, "</h2>\n            <h2>").concat(this._data.premiered, "</h2>\n\n        </div>\n        <img src=\"").concat(_delete.default, "\" data-id=\"").concat(this._data.id, "\" alt=\"\" class=\"delete\">\n        </div>\n        ");
+    }
+  }, {
+    key: "addHandlerAddList",
+    value: function addHandlerAddList(handler) {
+      document.querySelector('.movie-list').addEventListener("click", function (e) {
+        var data = e.target.closest(".sub-img");
+
+        if (data != null) {
+          // console.log(e.target.classList[1]);
+          handler(e.target.classList[1], e.target.closest(".card").dataset.id);
+        }
+      });
     }
   }]);
 
@@ -1822,15 +1897,13 @@ var cardViewHoverController = function cardViewHoverController(card, type) {
 };
 
 var addToListController = function addToListController(type, id) {
-  var data = model.changeMovieStatus(type, id);
+  model.changeMovieStatus(type, id);
 
   _gridView.default.render(model.getSearchResultsPage(model.state.pagination.currGridPage, 'grid'));
 
   _paginationView.default.renderGridView(model.state);
 
-  console.log(data);
-
-  _listView.default.render(data);
+  _listView.default.render(model.state.lists);
 };
 
 var init = function init() {
@@ -1841,12 +1914,13 @@ var init = function init() {
 
   _paginationView.default.addHandlerGridClick(controlGridPagination);
 
-  _gridView.default.addHandlerCardView(cardViewController); // sliderView.addHandlerCardView(cardViewController);
+  _gridView.default.addHandlerCardView(cardViewController);
 
+  _sliderView.default.addHandlerCardView(cardViewController);
 
   _sliderView.default.addHandlerRemoveCardView(removeCardViewController);
 
-  _gridView.default.addHandlerAddList(addToListController);
+  _listView.default.addHandlerAddList(addToListController);
 };
 
 init();
@@ -1878,7 +1952,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59923" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63950" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

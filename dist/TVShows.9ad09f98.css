@@ -418,26 +418,19 @@ ul li:hover:not(.active) {
 .movie-list .card {
     box-shadow: 1px antiquewhite;
     margin-bottom: 20px;
-
 }
 
 .movie-list .card:hover {
     transform: scale(1.05);
     /* write the code */
-
-    
-
 }
 
-.movie-list .card:hover .hover-div{
-
+.movie-list .card:hover .hover-div {
     visibility: visible;
-
 }
-.movie-list .card:hover .hover-div .item{
 
+.movie-list .card:hover .hover-div .item {
     visibility: visible;
-
 }
 
 .discover-movie .see-more-btn {
@@ -587,27 +580,43 @@ ul li:hover:not(.active) {
 }
 
 .row {
-    /* background-color: yellow; */
+    height: 150px;
     border-bottom: 2px solid rgb(235, 87, 113);
-    padding: 8px;
+    color: aliceblue;
+    padding: 16px;
     margin: 8px;
     display: flex;
-    color: aliceblue;
-    text-align: start;
-    justify-content: space-between;
+    position: relative;
 }
 
 .row img {
-    width: 20%;
+    width: 100%;
     height: 100%;
-    margin: auto 0;
     padding: 8px;
     border-radius: 15px;
+    object-fit: cover;
+    filter: blur(3px);
 }
 
 .row .delete {
-    width: 10%;
-    height: 100%;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: 0;
+    filter: brightness(1);
+}
+
+.row div {
+    filter: brightness(1);
+    position: absolute;
+    left: 11%;
+    top: 20%;
+    font-size: large;
+    text-align: center;
+    width: 80%;
+    background-color: rgba(0, 255, 255, 0.342);
+    border-radius: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .bookmark .watch-later {

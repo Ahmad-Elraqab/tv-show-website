@@ -9,13 +9,51 @@ class ListView extends View {
 
     render(data) {
 
-        this._data = data;
-        // console.log(data);
-        this._parentElement = document.querySelector(this._data.parentE);
+        console.log(data);
+        // this._clear();
+        document.querySelector('.favourite').innerHTML = '';
+        document.querySelector('.watch-later').innerHTML = '';
+        document.querySelector('.finished').innerHTML = '';
 
-        const markup = this._generateListMarkup();
+        data.favourite.forEach((element) => {
 
-        this._parentElement.insertAdjacentHTML('beforeend', markup);
+            this._data = element;
+
+            // console.log(element);
+
+            this._parentElement = document.querySelector(this._data.parentE);
+
+            const markup = this._generateListMarkup();
+
+            this._parentElement.insertAdjacentHTML('beforeend', markup);
+        });
+
+        data.watchLater.forEach((element) => {
+
+            this._data = element;
+
+            // console.log(element);
+
+            this._parentElement = document.querySelector(this._data.parentE);
+
+            const markup = this._generateListMarkup();
+
+            this._parentElement.insertAdjacentHTML('beforeend', markup);
+        });
+
+        data.finished.forEach((element) => {
+
+            this._data = element;
+
+            // console.log(element);
+
+            this._parentElement = document.querySelector(this._data.parentE);
+
+            const markup = this._generateListMarkup();
+
+            this._parentElement.insertAdjacentHTML('beforeend', markup);
+        });
+
     }
 
 
@@ -36,6 +74,22 @@ class ListView extends View {
 
     }
 
+    addHandlerAddList(handler) {
+
+
+        document.querySelector('.movie-list').addEventListener("click", function (e) {
+
+            const data = e.target.closest(".sub-img");
+
+            if (data != null) {
+
+                // console.log(e.target.classList[1]);
+                handler(e.target.classList[1], e.target.closest(".card").dataset.id);
+            }
+
+        })
+
+    }
 
 }
 
