@@ -19,9 +19,9 @@ export const state = {
     },
     lists: {
 
-        finished: [],
-        watchLater: [],
-        favourite: [],
+        myList: [],
+        myWatchLater: [],
+        myFavourite: [],
 
     }
 
@@ -78,67 +78,26 @@ export const changeMovieStatus = function (type, id) {
 
 const _checkData = function (id, type) {
 
+    // console.log(type);
+
     const card = state.TvShows.find((e) => e.id == id);
+    const data = state.lists[`${type}`].find((el) => el.id == id);
 
-    // i have tried to simplify this switch to one case but it didn't work with me.
-    // console.log(state.lists.finished.find((el) => el.id == id));
+    console.log(data);
+    // && data.parentE == `.bookmark .${type}`
+    if (data) {
+        if (data[`${type}`] == true) {
+            data[`${type}`] = false;
+            state.lists[`${type}`].splice(state.lists[`${type}`].indexOf(data), 1);
+        }
+    } else {
 
-    switch (type) {
-        case "myList":
-            let data = state.lists.finished.find((el) => el.id == id);
-            if (data) {
-                if (data.myList == true) {
-                    data.myList = false;
-                    state.lists.favourite.splice(state.lists.finished.indexOf(data), 1);
-                }
-            } else {
-                card.parentE = ".finished";
-                card.myList = true;
-                state.lists.finished.push(card);
-            }
-            break;
-
-        case "myWatchLater":
-            data = state.lists.watchLater.find((el) => el.id == id);
-            if (data) {
-                if (data.myWatchLater == true) {
-                    data.myWatchLater = false;
-                    state.lists.favourite.splice(state.lists.watchLater.indexOf(data), 1);
-
-                }
-            } else {
-                card.parentE = ".watch-later";
-                card.myWatchLater = true;
-                state.lists.watchLater.push(card);
-            }
-            break;
-
-        case "myFavourite":
-            data = state.lists.favourite.find((el) => el.id == id);
-            // console.log(data);
-            if (data) {
-                if (data.myFavourite == true) {
-                    data.myFavourite = false;
-                    state.lists.favourite.splice(state.lists.favourite.indexOf(data), 1);
-                }
-            } else {
-                card.parentE = ".favourite";
-                card.myFavourite = true;
-                state.lists.favourite.push(card);
-            }
-            break;
-
-        default:
-            break;
-
-
-
+        card[`${type}`] = true;
+        state.lists[`${type}`].push(card);
     }
 
-
-
-    // console.log(state.lists);
 }
+
 
 
 
@@ -175,3 +134,61 @@ const _checkData = function (id, type) {
 
 
     // }
+
+
+
+        // switch (type) {
+    //     case "myList":
+    //         let data = state.lists.finished.find((el) => el.id == id);
+    //         if (data) {
+    //             if (data.myList == true) {
+    //                 data.myList = false;
+    //                 state.lists.favourite.splice(state.lists.finished.indexOf(data), 1);
+    //             }
+    //         } else {
+    //             card.parentE = ".finished";
+    //             card.myList = true;
+    //             state.lists.finished.push(card);
+    //         }
+    //         break;
+
+    //     case "myWatchLater":
+    //         data = state.lists.watchLater.find((el) => el.id == id);
+    //         if (data) {
+    //             if (data.myWatchLater == true) {
+    //                 data.myWatchLater = false;
+    //                 state.lists.favourite.splice(state.lists.watchLater.indexOf(data), 1);
+
+    //             }
+    //         } else {
+    //             card.parentE = ".watch-later";
+    //             card.myWatchLater = true;
+    //             state.lists.watchLater.push(card);
+    //         }
+    //         break;
+
+    //     case "myFavourite":
+    //         data = state.lists.favourite.find((el) => el.id == id);
+    //         // console.log(data);
+    //         if (data) {
+    //             if (data.myFavourite == true) {
+    //                 data.myFavourite = false;
+    //                 state.lists.favourite.splice(state.lists.favourite.indexOf(data), 1);
+    //             }
+    //         } else {
+    //             card.parentE = ".favourite";
+    //             card.myFavourite = true;
+    //             state.lists.favourite.push(card);
+    //         }
+    //         break;
+
+    //     default:
+    //         break;
+
+
+
+    // }
+
+
+
+    // console.log(state.lists);

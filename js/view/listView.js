@@ -9,45 +9,47 @@ class ListView extends View {
 
     render(data) {
 
-        console.log(data);
+        // Need to refactor this function.
+
+        // console.log(data);
         // this._clear();
-        document.querySelector('.favourite').innerHTML = '';
-        document.querySelector('.watch-later').innerHTML = '';
-        document.querySelector('.finished').innerHTML = '';
+        document.querySelector('.bookmark .myFavourite').innerHTML = '';
+        document.querySelector('.bookmark .myWatchLater').innerHTML = '';
+        document.querySelector('.bookmark .myList').innerHTML = '';
 
-        data.favourite.forEach((element) => {
+        data.myFavourite.forEach((element) => {
 
             this._data = element;
 
             // console.log(element);
 
-            this._parentElement = document.querySelector(this._data.parentE);
+            this._parentElement = document.querySelector('.bookmark .myFavourite');
 
             const markup = this._generateListMarkup();
 
             this._parentElement.insertAdjacentHTML('beforeend', markup);
         });
 
-        data.watchLater.forEach((element) => {
+        data.myWatchLater.forEach((element) => {
 
             this._data = element;
 
             // console.log(element);
 
-            this._parentElement = document.querySelector(this._data.parentE);
+            this._parentElement = document.querySelector('.bookmark .myWatchLater');
 
             const markup = this._generateListMarkup();
 
             this._parentElement.insertAdjacentHTML('beforeend', markup);
         });
 
-        data.finished.forEach((element) => {
+        data.myList.forEach((element) => {
 
             this._data = element;
 
             // console.log(element);
 
-            this._parentElement = document.querySelector(this._data.parentE);
+            this._parentElement = document.querySelector('.bookmark .myList');
 
             const markup = this._generateListMarkup();
 

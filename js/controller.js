@@ -80,14 +80,6 @@ const removeCardViewController = function () {
 
 }
 
-const cardViewHoverController = function (card, type) {
-
-    if (type == 'show')
-        gridView.showBottomCard(card);
-
-    if (type == 'hide')
-        gridView.hideBottomCard(card);
-}
 
 const addToListController = function (type, id) {
 
@@ -116,3 +108,20 @@ const init = function () {
 
 
 init();
+
+
+
+
+
+
+
+// Archive.
+
+// const cardViewHoverController = function (card, type) {
+
+//     if (type == 'show')
+//         gridView.showBottomCard(card);
+
+//     if (type == 'hide')
+//         gridView.hideBottomCard(card);
+// }

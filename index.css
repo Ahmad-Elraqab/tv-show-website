@@ -577,6 +577,14 @@ ul li:hover:not(.active) {
     /* grid-template-columns: auto auto auto; */
     grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-top: 50px;
+    color: aliceblue;
+}
+
+.bookmark .bookmark-child {
+    margin: 18px;
+    text-align: center;
+    font-family: sans-serif;
+
 }
 
 .row {
@@ -617,26 +625,4 @@ ul li:hover:not(.active) {
     background-color: rgba(0, 255, 255, 0.342);
     border-radius: 10px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-.bookmark .watch-later {
-    margin: 18px;
-    color: white;
-    justify-content: center;
-    text-align: center;
-    font-family: sans-serif;
-}
-
-.bookmark .finished {
-    margin: 18px;
-    color: white;
-    text-align: center;
-    font-family: sans-serif;
-}
-
-.bookmark .favourite {
-    margin: 18px;
-    color: white;
-    text-align: center;
-    font-family: sans-serif;
 }

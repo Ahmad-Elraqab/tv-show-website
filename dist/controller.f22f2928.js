@@ -984,9 +984,9 @@ var state = {
     resultsPerPage: _config.RES_PER_PAGE
   },
   lists: {
-    finished: [],
-    watchLater: [],
-    favourite: []
+    myList: [],
+    myWatchLater: [],
+    myFavourite: []
   }
 };
 exports.state = state;
@@ -1061,70 +1061,24 @@ var changeMovieStatus = function changeMovieStatus(type, id) {
 exports.changeMovieStatus = changeMovieStatus;
 
 var _checkData = function _checkData(id, type) {
+  // console.log(type);
   var card = state.TvShows.find(function (e) {
     return e.id == id;
-  }); // i have tried to simplify this switch to one case but it didn't work with me.
-  // console.log(state.lists.finished.find((el) => el.id == id));
+  });
+  var data = state.lists["".concat(type)].find(function (el) {
+    return el.id == id;
+  });
+  console.log(data); // && data.parentE == `.bookmark .${type}`
 
-  switch (type) {
-    case "myList":
-      var data = state.lists.finished.find(function (el) {
-        return el.id == id;
-      });
-
-      if (data) {
-        if (data.myList == true) {
-          data.myList = false;
-          state.lists.favourite.splice(state.lists.finished.indexOf(data), 1);
-        }
-      } else {
-        card.parentE = ".finished";
-        card.myList = true;
-        state.lists.finished.push(card);
-      }
-
-      break;
-
-    case "myWatchLater":
-      data = state.lists.watchLater.find(function (el) {
-        return el.id == id;
-      });
-
-      if (data) {
-        if (data.myWatchLater == true) {
-          data.myWatchLater = false;
-          state.lists.favourite.splice(state.lists.watchLater.indexOf(data), 1);
-        }
-      } else {
-        card.parentE = ".watch-later";
-        card.myWatchLater = true;
-        state.lists.watchLater.push(card);
-      }
-
-      break;
-
-    case "myFavourite":
-      data = state.lists.favourite.find(function (el) {
-        return el.id == id;
-      }); // console.log(data);
-
-      if (data) {
-        if (data.myFavourite == true) {
-          data.myFavourite = false;
-          state.lists.favourite.splice(state.lists.favourite.indexOf(data), 1);
-        }
-      } else {
-        card.parentE = ".favourite";
-        card.myFavourite = true;
-        state.lists.favourite.push(card);
-      }
-
-      break;
-
-    default:
-      break;
-  } // console.log(state.lists);
-
+  if (data) {
+    if (data["".concat(type)] == true) {
+      data["".concat(type)] = false;
+      state.lists["".concat(type)].splice(state.lists["".concat(type)].indexOf(data), 1);
+    }
+  } else {
+    card["".concat(type)] = true;
+    state.lists["".concat(type)].push(card);
+  }
 }; // Archive.
 // if (state.lists.finished.find((e) => e.id == id)) {
 //     if (e.myList == true) {
@@ -1147,6 +1101,51 @@ var _checkData = function _checkData(id, type) {
 //     default:
 //         break;
 // }
+// switch (type) {
+//     case "myList":
+//         let data = state.lists.finished.find((el) => el.id == id);
+//         if (data) {
+//             if (data.myList == true) {
+//                 data.myList = false;
+//                 state.lists.favourite.splice(state.lists.finished.indexOf(data), 1);
+//             }
+//         } else {
+//             card.parentE = ".finished";
+//             card.myList = true;
+//             state.lists.finished.push(card);
+//         }
+//         break;
+//     case "myWatchLater":
+//         data = state.lists.watchLater.find((el) => el.id == id);
+//         if (data) {
+//             if (data.myWatchLater == true) {
+//                 data.myWatchLater = false;
+//                 state.lists.favourite.splice(state.lists.watchLater.indexOf(data), 1);
+//             }
+//         } else {
+//             card.parentE = ".watch-later";
+//             card.myWatchLater = true;
+//             state.lists.watchLater.push(card);
+//         }
+//         break;
+//     case "myFavourite":
+//         data = state.lists.favourite.find((el) => el.id == id);
+//         // console.log(data);
+//         if (data) {
+//             if (data.myFavourite == true) {
+//                 data.myFavourite = false;
+//                 state.lists.favourite.splice(state.lists.favourite.indexOf(data), 1);
+//             }
+//         } else {
+//             card.parentE = ".favourite";
+//             card.myFavourite = true;
+//             state.lists.favourite.push(card);
+//         }
+//         break;
+//     default:
+//         break;
+// }
+// console.log(state.lists);
 },{"./config.js":"js/config.js","./helpers.js":"js/helpers.js","regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"image/exit.png":[function(require,module,exports) {
 module.exports = "/exit.ec9ccb2d.png";
 },{}],"js/view/view.js":[function(require,module,exports) {
@@ -1704,33 +1703,34 @@ var ListView = /*#__PURE__*/function (_View) {
     value: function render(data) {
       var _this2 = this;
 
-      console.log(data); // this._clear();
-
-      document.querySelector('.favourite').innerHTML = '';
-      document.querySelector('.watch-later').innerHTML = '';
-      document.querySelector('.finished').innerHTML = '';
-      data.favourite.forEach(function (element) {
+      // Need to refactor this function.
+      // console.log(data);
+      // this._clear();
+      document.querySelector('.bookmark .myFavourite').innerHTML = '';
+      document.querySelector('.bookmark .myWatchLater').innerHTML = '';
+      document.querySelector('.bookmark .myList').innerHTML = '';
+      data.myFavourite.forEach(function (element) {
         _this2._data = element; // console.log(element);
 
-        _this2._parentElement = document.querySelector(_this2._data.parentE);
+        _this2._parentElement = document.querySelector('.bookmark .myFavourite');
 
         var markup = _this2._generateListMarkup();
 
         _this2._parentElement.insertAdjacentHTML('beforeend', markup);
       });
-      data.watchLater.forEach(function (element) {
+      data.myWatchLater.forEach(function (element) {
         _this2._data = element; // console.log(element);
 
-        _this2._parentElement = document.querySelector(_this2._data.parentE);
+        _this2._parentElement = document.querySelector('.bookmark .myWatchLater');
 
         var markup = _this2._generateListMarkup();
 
         _this2._parentElement.insertAdjacentHTML('beforeend', markup);
       });
-      data.finished.forEach(function (element) {
+      data.myList.forEach(function (element) {
         _this2._data = element; // console.log(element);
 
-        _this2._parentElement = document.querySelector(_this2._data.parentE);
+        _this2._parentElement = document.querySelector('.bookmark .myList');
 
         var markup = _this2._generateListMarkup();
 
@@ -1891,11 +1891,6 @@ var removeCardViewController = function removeCardViewController() {
   }, 1000);
 };
 
-var cardViewHoverController = function cardViewHoverController(card, type) {
-  if (type == 'show') _gridView.default.showBottomCard(card);
-  if (type == 'hide') _gridView.default.hideBottomCard(card);
-};
-
 var addToListController = function addToListController(type, id) {
   model.changeMovieStatus(type, id);
 
@@ -1923,7 +1918,13 @@ var init = function init() {
   _listView.default.addHandlerAddList(addToListController);
 };
 
-init();
+init(); // Archive.
+// const cardViewHoverController = function (card, type) {
+//     if (type == 'show')
+//         gridView.showBottomCard(card);
+//     if (type == 'hide')
+//         gridView.hideBottomCard(card);
+// }
 },{"./model.js":"js/model.js","regenerator-runtime":"node_modules/regenerator-runtime/runtime.js","./view/view.js":"js/view/view.js","./view/sliderView.js":"js/view/sliderView.js","./view/gridView.js":"js/view/gridView.js","./view/paginationView.js":"js/view/paginationView.js","./view/listView.js":"js/view/listView.js"}],"node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -1952,7 +1953,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63950" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50439" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
