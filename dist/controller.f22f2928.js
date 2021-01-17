@@ -1365,7 +1365,7 @@ var SliderView = /*#__PURE__*/function (_View) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _defineProperty(_assertThisInitialized(_this), "_parentElement", document.querySelector('.slider-box'));
+    _defineProperty(_assertThisInitialized(_this), "_parentElement", document.querySelectorAll('.slider-box'));
 
     _defineProperty(_assertThisInitialized(_this), "_data", void 0);
 
@@ -1754,6 +1754,19 @@ var ListView = /*#__PURE__*/function (_View) {
         }
       });
     }
+  }, {
+    key: "addHandlerRemoveFromList",
+    value: function addHandlerRemoveFromList(handler) {
+      document.querySelector('.bookmark').addEventListener("click", function (e) {
+        var data = e.target.closest(".delete");
+
+        if (data != null) {
+          console.log(e.target.parentNode.parentNode.className); // console.log(e.target.classList[1]);
+
+          handler(e.target.parentNode.parentNode.className, data.dataset.id);
+        }
+      });
+    }
   }]);
 
   return ListView;
@@ -1899,7 +1912,11 @@ var addToListController = function addToListController(type, id) {
   _paginationView.default.renderGridView(model.state);
 
   _listView.default.render(model.state.lists);
-};
+}; // const removeFromListController = function (type, id) {
+//     model.changeMovieStatus(type, id);
+//     listView.render(model.state.lists);
+// }
+
 
 var init = function init() {
   sliderController();
@@ -1916,6 +1933,8 @@ var init = function init() {
   _sliderView.default.addHandlerRemoveCardView(removeCardViewController);
 
   _listView.default.addHandlerAddList(addToListController);
+
+  _listView.default.addHandlerRemoveFromList(addToListController);
 };
 
 init(); // Archive.
@@ -1953,7 +1972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50439" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61818" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

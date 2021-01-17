@@ -2,7 +2,7 @@ import View from './view';
 
 class SliderView extends View {
 
-    _parentElement = document.querySelector('.slider-box');
+    _parentElement = document.querySelectorAll('.slider-box');
     _data;
 
 

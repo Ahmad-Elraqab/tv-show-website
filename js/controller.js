@@ -93,6 +93,15 @@ const addToListController = function (type, id) {
 
 
 }
+
+// const removeFromListController = function (type, id) {
+
+//     model.changeMovieStatus(type, id);
+
+//     listView.render(model.state.lists);
+
+// }
+
 const init = function () {
 
     sliderController();
@@ -103,6 +112,7 @@ const init = function () {
     sliderView.addHandlerCardView(cardViewController);
     sliderView.addHandlerRemoveCardView(removeCardViewController);
     listView.addHandlerAddList(addToListController);
+    listView.addHandlerRemoveFromList(addToListController);
 
 }
 
