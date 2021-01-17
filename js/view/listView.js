@@ -93,6 +93,26 @@ class ListView extends View {
 
     }
 
+
+    addHandlerRemoveFromList(handler) {
+
+
+        document.querySelector('.bookmark').addEventListener("click", function (e) {
+
+            const data = e.target.closest(".delete");
+
+            if (data != null) {
+
+                console.log(e.target.parentNode.parentNode.className);
+                // console.log(e.target.classList[1]);
+                handler(e.target.parentNode.parentNode.className, data.dataset.id);
+            }
+
+        })
+
+
+    }
+
 }
 
 export default new ListView();

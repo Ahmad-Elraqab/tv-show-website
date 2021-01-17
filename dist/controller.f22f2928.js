@@ -1754,6 +1754,19 @@ var ListView = /*#__PURE__*/function (_View) {
         }
       });
     }
+  }, {
+    key: "addHandlerRemoveFromList",
+    value: function addHandlerRemoveFromList(handler) {
+      document.querySelector('.bookmark').addEventListener("click", function (e) {
+        var data = e.target.closest(".delete");
+
+        if (data != null) {
+          console.log(e.target.parentNode.parentNode.className); // console.log(e.target.classList[1]);
+
+          handler(e.target.parentNode.parentNode.className, data.dataset.id);
+        }
+      });
+    }
   }]);
 
   return ListView;
@@ -1916,6 +1929,8 @@ var init = function init() {
   _sliderView.default.addHandlerRemoveCardView(removeCardViewController);
 
   _listView.default.addHandlerAddList(addToListController);
+
+  _listView.default.addHandlerRemoveFromList(addToListController);
 };
 
 init(); // Archive.
@@ -1953,7 +1968,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50439" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54386" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

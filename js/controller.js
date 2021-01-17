@@ -103,6 +103,7 @@ const init = function () {
     sliderView.addHandlerCardView(cardViewController);
     sliderView.addHandlerRemoveCardView(removeCardViewController);
     listView.addHandlerAddList(addToListController);
+    listView.addHandlerRemoveFromList(addToListController);
 
 }
 
